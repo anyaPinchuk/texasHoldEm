@@ -3,13 +3,14 @@ package poker;
 import poker.model.Card;
 import poker.model.Player;
 import poker.model.PlayerRule;
-import poker.rule.RoyalFlushRule;
-import poker.rule.StraightRule;
+import poker.model.Strength;
 import poker.rule.StrengthRule;
 
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import static poker.CardUtil.sortCards;
 
 public class StrengthCalculator {
     private List<StrengthRule> strengthRules;
@@ -20,11 +21,8 @@ public class StrengthCalculator {
         this.cachedRules = cachedRules;
     }
 
-    public void calculate(Map<Integer, List<Player>> strengthMap, List<Card> boardCards, Player player) {
-        List<Card> allCards = Stream.concat(boardCards.stream(), player.getCards().stream())
-                // sorts 7 cards by rank
-                .sorted(Card::compareTo)
-                .collect(Collectors.toList());
+    public void calculate(Map<Strength, List<Player>> strengthMap, List<Card> boardCards, Player player) {
+        List<Card> allCards = sortCards(boardCards, player.getCards());
 
         for (StrengthRule rule : strengthRules) {
             //before evaluating next rule check if the strength was already set by one of the child rules

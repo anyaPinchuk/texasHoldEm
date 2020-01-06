@@ -1,5 +1,7 @@
 package poker.model;
 
+import poker.CardUtil;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -53,10 +55,6 @@ public class Player {
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        cards.forEach(card -> builder
-                .append(card.getRank().getValue())
-                .append(card.getSuit().name()));
-        return builder.toString();
+        return CardUtil.getCardsAsString(cards).toString();
     }
 }

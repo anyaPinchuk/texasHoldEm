@@ -15,10 +15,10 @@ public class TestData {
 
     public TestData() {
         createBoardCards();
-        players.add(new Player(Arrays.asList(new Card(Suit.c, Rank.A), new Card(Suit.d, Rank.FOUR))));
-        players.add(new Player(Arrays.asList(new Card(Suit.s, Rank.A), new Card(Suit.s, Rank.NINE))));
-        players.add(new Player(Arrays.asList(new Card(Suit.h, Rank.K), new Card(Suit.d, Rank.K))));
-        players.add(new Player(Arrays.asList(new Card(Suit.d, Rank.FIVE), new Card(Suit.d, Rank.SIX))));
+        players.add(new Player("1", Arrays.asList(new Card(Suit.c, Rank.A), new Card(Suit.d, Rank.FOUR))));
+        players.add(new Player("2", Arrays.asList(new Card(Suit.s, Rank.A), new Card(Suit.s, Rank.NINE))));
+        players.add(new Player("3", Arrays.asList(new Card(Suit.h, Rank.K), new Card(Suit.d, Rank.K))));
+        players.add(new Player("4", Arrays.asList(new Card(Suit.d, Rank.FIVE), new Card(Suit.d, Rank.SIX))));
     }
 
     public void createBoardCards() {
