@@ -2,14 +2,11 @@ package poker;
 
 import org.junit.Test;
 import poker.model.Card;
-import poker.model.Player;
 import poker.rule.StraightRule;
 
 import java.util.List;
 
-public class StraightTest {
-    private static Player player = new Player("1", null);
-
+public class StraightTest extends RuleTest {
     @Test
     public void shouldPassWhen8Through4() {
         StraightRule straightRule = new StraightRule();

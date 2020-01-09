@@ -8,25 +8,29 @@ import poker.model.Strength;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.TreeSet;
 
 public class StraightRule implements StrengthRule {
+    private boolean sameSuit = false;
 
     @Override
     public boolean test(List<Card> cards, Player player) {
         if (cards == null || cards.size() == 0) return false;
 
-        TreeSet<Card> uniqueCards = new TreeSet<>(cards);
+//        TreeSet<Card> uniqueCards = new TreeSet<>(cards);
+
         boolean isStraight = false;
         List<Card> sequence = new ArrayList<>(5);
 
-        Iterator<Card> iterator = uniqueCards.iterator();
+//        Iterator<Card> iterator = uniqueCards.iterator();
+        Iterator<Card> iterator = cards.iterator();
         Card prevItem = iterator.next();
 
         while (iterator.hasNext()) {
             Card currItem = iterator.next();
+            int diff = prevItem.getRank().ordinal() - currItem.getRank().ordinal();
+            if (diff == 1 &&
+                    (!sameSuit || prevItem.getSuit() == currItem.getSuit())) {
 
-            if (prevItem.getRank().ordinal() - currItem.getRank().ordinal() == 1) {
                 sequence.add(prevItem);
 
                 if (sequence.size() == 4 || !iterator.hasNext()) {
@@ -34,11 +38,9 @@ public class StraightRule implements StrengthRule {
                     isStraight = true;
                     break;
                 }
-
             } else {
                 sequence.clear();
             }
-
 
             prevItem = currItem;
         }
@@ -64,5 +66,14 @@ public class StraightRule implements StrengthRule {
     @Override
     public int compare(Player player1, Player player2) {
         return 0;
+    }
+
+
+    public boolean isSameSuit() {
+        return sameSuit;
+    }
+
+    public void setSameSuit(boolean sameSuit) {
+        this.sameSuit = sameSuit;
     }
 }

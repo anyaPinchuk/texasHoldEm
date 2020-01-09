@@ -7,20 +7,16 @@ import java.util.List;
 
 public class StraightFlushRule implements StrengthRule {
     private StraightRule straightRule;
-    private FlushRule flushRule;
 
-    public StraightFlushRule(StraightRule straightRule, FlushRule flushRule) {
+    public StraightFlushRule(StraightRule straightRule) {
         this.straightRule = straightRule;
-        this.flushRule = flushRule;
     }
 
     @Override
-    public boolean test(List<Card> boardCards, Player player) {
-        if (straightRule.test(boardCards, player) && flushRule.test(boardCards, player)) {
-            return true;
-        }
-        return false;
+    public boolean test(List<Card> cards, Player player) {
+        return straightRule.test(cards, player);
     }
+
     @Override
     public int compare(Player player1, Player player2) {
         return 0;
