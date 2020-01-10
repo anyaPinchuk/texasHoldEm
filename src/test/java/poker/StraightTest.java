@@ -2,6 +2,7 @@ package poker;
 
 import org.junit.Test;
 import poker.model.Card;
+import poker.model.Strength;
 import poker.rule.StraightRule;
 
 import java.util.List;
@@ -14,6 +15,7 @@ public class StraightTest extends RuleTest {
 
         assert straightRule.test(allCards, player);
         assert CardUtil.getCardsAsString(player.getBestHand()).toString().equals("8s7c6s5d4c");
+        assert player.getStrength() == Strength.STRAIGHT;
     }
 
     @Test
@@ -25,11 +27,13 @@ public class StraightTest extends RuleTest {
         //1
         assert straightRule.test(allCards, player);
         assert CardUtil.getCardsAsString(player.getBestHand()).toString().equals(expected);
+        assert player.getStrength() == Strength.STRAIGHT;
 
         //2
         CardUtil.parseCards("AsAc5s5d4h3c2c");
         assert straightRule.test(allCards, player);
         assert CardUtil.getCardsAsString(player.getBestHand()).toString().equals(expected);
+        assert player.getStrength() == Strength.STRAIGHT;
     }
 
     @Test
@@ -39,6 +43,7 @@ public class StraightTest extends RuleTest {
 
         assert straightRule.test(allCards, player);
         assert CardUtil.getCardsAsString(player.getBestHand()).toString().equals("AdKcQcJhTh");
+        assert player.getStrength() == Strength.STRAIGHT;
     }
 
     @Test
@@ -48,6 +53,7 @@ public class StraightTest extends RuleTest {
 
         assert straightRule.test(allCards, player);
         assert CardUtil.getCardsAsString(player.getBestHand()).toString().equals("Td9d8h7s6c");
+        assert player.getStrength() == Strength.STRAIGHT;
     }
 
     @Test
@@ -57,6 +63,7 @@ public class StraightTest extends RuleTest {
 
         assert straightRule.test(allCards, player);
         assert CardUtil.getCardsAsString(player.getBestHand()).toString().equals("JsTh9c8h7d");
+        assert player.getStrength() == Strength.STRAIGHT;
     }
 
     @Test

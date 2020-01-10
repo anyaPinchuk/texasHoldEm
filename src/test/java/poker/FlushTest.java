@@ -2,6 +2,7 @@ package poker;
 
 import org.junit.Test;
 import poker.model.Card;
+import poker.model.Strength;
 import poker.rule.FlushRule;
 
 import java.util.List;
@@ -14,6 +15,7 @@ public class FlushTest extends RuleTest{
 
         assert flushRule.test(allCards, player);
         assert CardUtil.getCardsAsString(player.getBestHand()).toString().equals("AsKsJs7s2s");
+        assert player.getStrength() == Strength.FLUSH;
     }
 
     @Test
@@ -22,7 +24,8 @@ public class FlushTest extends RuleTest{
         List<Card> allCards = CardUtil.parseCards("AsKsJsTs7s4s2s");
 
         assert flushRule.test(allCards, player);
-        assert CardUtil.getCardsAsString(player.getBestHand()).toString().equals("AsKsJsTs7s");
+        assert CardUtil.getCardsAsString(player.getBestHand()).toString().equals("AsKsJsTs7s4s2s");
+        assert player.getStrength() == Strength.FLUSH;
     }
 
     @Test

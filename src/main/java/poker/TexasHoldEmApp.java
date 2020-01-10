@@ -63,8 +63,7 @@ public class TexasHoldEmApp {
     public static void initRules() {
         FlushRule flushRule = new FlushRule();
         StraightRule straightRule = new StraightRule();
-        straightRule.setSameSuit(true);
-        StraightFlushRule straightFlushRule = new StraightFlushRule(straightRule);
+        StraightFlushRule straightFlushRule = new StraightFlushRule(straightRule, flushRule);
 
         strengthRules.add(new RoyalFlushRule(straightFlushRule));
         strengthRules.add(straightFlushRule);
