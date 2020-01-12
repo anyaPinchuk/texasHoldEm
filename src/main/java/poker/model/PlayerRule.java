@@ -1,16 +1,14 @@
 package poker.model;
 
-import poker.rule.StraightRule;
-
 import java.util.Objects;
 
 public class PlayerRule {
     Player player;
-    StraightRule rule;
+    Strength strength;
 
-    public PlayerRule(Player player, StraightRule rule) {
+    public PlayerRule(Player player, Strength strength) {
         this.player = player;
-        this.rule = rule;
+        this.strength = strength;
     }
 
     @Override
@@ -19,11 +17,11 @@ public class PlayerRule {
         if (o == null || getClass() != o.getClass()) return false;
         PlayerRule key = (PlayerRule) o;
         return player.equals(key.player) &&
-                rule.equals(key.rule);
+                strength.equals(key.strength);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(player, rule);
+        return Objects.hash(player, strength);
     }
 }

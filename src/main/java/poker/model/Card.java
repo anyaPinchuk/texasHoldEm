@@ -45,4 +45,9 @@ public class Card implements Comparable<Card> {
     public int compareTo(Card o) {
         return Integer.compare(o.rank.ordinal(), this.rank.ordinal());
     }
+
+    @Override
+    public String toString() {
+        return rank.toString() + suit;
+    }
 }

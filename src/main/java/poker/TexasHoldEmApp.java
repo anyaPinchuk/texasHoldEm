@@ -4,14 +4,13 @@ import poker.model.Card;
 import poker.model.Player;
 import poker.model.PlayerRule;
 import poker.model.Strength;
-import poker.rule.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static poker.CardUtil.parseCards;
 
 public class TexasHoldEmApp {
-    private static List<StrengthRule> strengthRules = new ArrayList<>(10);
     private static Map<Strength, List<Player>> strengthMap = new TreeMap<>();
     private static Map<PlayerRule, Boolean> cachedRules;
 
@@ -19,8 +18,7 @@ public class TexasHoldEmApp {
         List<Card> boardCards = null;
         List<Player> hands = null;
         Scanner scanner = new Scanner(System.in);
-        StrengthCalculator strengthCalculator = new StrengthCalculator(strengthRules, cachedRules);
-        initRules();
+        StrengthCalculator strengthCalculator = new StrengthCalculator(cachedRules);
 
         while (true) {
             String[] input = scanner.nextLine().split(" ");
@@ -49,24 +47,15 @@ public class TexasHoldEmApp {
             if (hands != null) break;
         }
 
-        cachedRules = new HashMap<>(hands.size() * strengthRules.size());
+        cachedRules = new HashMap<>(hands.size() * 10);
 
         for (Player player : hands) {
-            strengthCalculator.calculate(strengthMap, boardCards, player);
+            strengthCalculator.calculate(boardCards, player);
         }
 
+        strengthMap = hands.stream().collect(Collectors.groupingBy(Player::getStrength));
+
         StrengthPrinter.printSortedStrength(boardCards, strengthMap);
-
-    }
-
-
-    public static void initRules() {
-        FlushRule flushRule = new FlushRule();
-        StraightRule straightRule = new StraightRule();
-        StraightFlushRule straightFlushRule = new StraightFlushRule(straightRule, flushRule);
-
-        strengthRules.add(new RoyalFlushRule(straightFlushRule));
-        strengthRules.add(straightFlushRule);
 
     }
 }
