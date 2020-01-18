@@ -10,46 +10,51 @@ import java.util.stream.Collectors;
 
 public class StrengthPrinter {
 
-    public static void printSortedStrength(List<Card> boardCards, Map<Strength, List<Player>> strengthMap) {
+    public static String printSortedStrength(List<Card> boardCards, Map<Strength, List<Player>> strengthMap) {
+        String spaceSeparator = " ";
+        String equalSeparator = "=";
+        StringBuilder output = new StringBuilder();
+
         for (Map.Entry<Strength, List<Player>> e : strengthMap.entrySet()) {
             List<Player> players = e.getValue();
+            NavigableMap<String, List<Player>> playerMapSorted = new TreeMap<String, List<Player>>((o1, o2) -> {
+                int length = Integer.min(o1.length(), o2.length());
+                for (char i = 0; i < length; i++) {
+                    int result = Integer.compare(Rank.fromValue(o2.charAt(i)).ordinal(),
+                            Rank.fromValue(o1.charAt(i)).ordinal());
+                    if (result != 0) return result;
+                }
+                return 0;
+            }).descendingMap();
 
-            if (e.getValue().size() > 1)
-                players = StrengthComparator.sort(e.getKey(), e.getValue());
+            if (players.size() > 1) {
+                players.stream().collect(Collectors.groupingBy(StrengthPrinter::getHandAsString)).forEach(playerMapSorted::put);
+            } else {
+                Player player = players.get(0);
+                playerMapSorted.put(getHandAsString(player), Collections.singletonList(player));
+            }
 
-            Map<String, List<Player>> playerMap = players.stream().collect(Collectors.groupingBy(StrengthPrinter::getID));
+            for (List<Player> playerList : playerMapSorted.values()) {
+                if (playerList.size() == 1) {
+                    output.append(playerList.get(0));
+                    output.append(spaceSeparator);
+                    continue;
+                }
 
-            String spaceSeparator = " ";
-            String equalSeparator = "=";
-
-            StringBuilder output = new StringBuilder();
-            for (Map.Entry<String, List<Player>> entry : playerMap.entrySet()
-                    .stream()
-                    .sorted((o1, o2) -> {
-                        String cards1 = o1.getKey();
-                        String cards2 = o2.getKey();
-                        int length = Integer.min(cards1.length(), cards2.length());
-                        for (char i = 0; i < length; i++) {
-                            int result = Integer.compare(Rank.fromValue(cards2.charAt(i)).ordinal(),
-                                    Rank.fromValue(cards1.charAt(i)).ordinal());
-                            if (result != 0) return result;
-                        }
-
-                        return 0;
-                    })
-                    .collect(Collectors.toList())) {
-                for (Player player : entry.getValue()) {
-                    output.append(player).append(equalSeparator);
+                int i = 0;
+                for (Player player : playerList) {
+                    output.append(player);
+                    if (++i != playerList.size())
+                        output.append(equalSeparator);
                 }
                 output.append(spaceSeparator);
             }
 
-            System.out.println(output);
         }
-
+        return output.toString().trim() + "\n";
     }
 
-    public static String getID(Player player) {
+    public static String getHandAsString(Player player) {
         return player.getBestHand().stream().map(card -> String.valueOf(card.getRank().getValue())).collect(Collectors.joining());
     }
 }

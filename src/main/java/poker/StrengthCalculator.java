@@ -18,6 +18,16 @@ public class StrengthCalculator {
         List<Card> allCards = sortCards(boardCards, player.getCards());
 
         findBestStrength(allCards, player);
+
+//get kicker cards
+        List<Card> bestHand = player.getBestHand();
+        for (Card card : allCards) {
+            if (bestHand.size() >= 5) break;
+            if (!bestHand.contains(card)) {
+                bestHand.add(card);
+            }
+        }
+
     }
 
     public void findBestStrength(List<Card> allCards, Player player) {
@@ -49,12 +59,12 @@ public class StrengthCalculator {
         if (testPair(allCards, player))
             return;
 
-        getHighCard(player);
+        getHighCard(allCards, player);
     }
 
-    private void getHighCard(Player player) {
+    private void getHighCard(List<Card> allCards, Player player) {
         player.setStrength(Strength.HIGH_CARD);
-        player.setBestHand(player.getCards().stream().sorted().collect(Collectors.toList()));
+        player.setBestHand(allCards.subList(0, 5));
     }
 
     public static boolean testRoyalFlush(List<Card> allCards, Player player) {
@@ -130,7 +140,7 @@ public class StrengthCalculator {
 
         if (bestHand != null) {
             player.setStrength(Strength.FLUSH);
-            player.setBestHand(bestHand);
+            player.setBestHand(bestHand.subList(0,5));
             return true;
         }
         return false;
@@ -141,27 +151,6 @@ public class StrengthCalculator {
         List<Card> bestHand = cardsMap.values().stream().filter(val -> val.size() == 4).findFirst().orElse(null);
 
         if (bestHand != null) {
-            // define the better kicker card
-//            TreeSet<Card> kickerCandidates = new TreeSet<>();
-//
-//            player.getCards().forEach(card -> {
-//                if (!bestHand.contains(card)) {
-//                    kickerCandidates.add(card);
-//                }
-//            });
-//
-//            if (kickerCandidates.isEmpty()) {
-//                Rank bestHandRank = bestHand.get(0).getRank();
-//
-//                for (Card card : cards) {
-//                    if (bestHandRank != card.getRank()) {
-//                        bestHand.add(card);
-//                        break;
-//                    }
-//                }
-//            } else {
-//                bestHand.add(kickerCandidates.first());
-//            }
             player.setStrength(Strength.FOUR_OF_A_KIND);
             player.setBestHand(bestHand);
             return true;
@@ -208,19 +197,6 @@ public class StrengthCalculator {
                 .orElse(null);
 
         if (bestHand != null) {
-            // define the best kicker cards
-
-//            player.getCards().stream().forEach(card -> {
-//                if (!bestHand.contains(card) && bestHand.size() < 5) {
-//                    bestHand.add(card);
-//                }
-//            });
-//
-//            for (Card card : cards) {
-//                if (!bestHand.contains(card) && bestHand.size() < 5) {
-//                    bestHand.add(card);
-//                }
-//            }
             player.setStrength(Strength.THREE_OF_A_KIND);
             player.setBestHand(bestHand);
             return true;
